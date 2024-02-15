@@ -22,27 +22,43 @@
         }
     </style>
 </head>
-<body>
-    <div class="card">
-        <img src="https://localhost:8080/ducks/1/image" alt="Avatar" style="width:100%">
-        <div class="container">
-            <h4><b>1</b></h4>
-            <p>Mallard</p>
-        </div>
-    </div>
-    <div class="card">
-        <img src="https://localhost:8080/ducks/5/image" alt="Avatar" style="width:100%">
-        <div class="container">
-            <h4><b>5</b></h4>
-            <p>Mallard</p>
-        </div>
-    </div>
-    <div class="card">
-        <img src="https://localhost:8080/ducks/4/image" alt="Avatar" style="width:100%">
-        <div class="container">
-            <h4><b>4</b></h4>
-            <p>Redhead</p>
-        </div>
-    </div>    
+<body onload="pond()">
+    <div class="card" id="duckCard"></div>
+    
+    <script>
+        let ducks = [];
+        async function getAll(){
+            let host = "http://localhost:8080";
+            try{
+                let response = await fetch(host + "/ducks")
+                if(response.ok){
+                    let ducks = await response.json();
+                    return ducks;
+                }else{
+                    console.error("HTTP Error: " + response.status);
+                    return [];
+                }
+            }catch(error){
+            console.error("Fetch error: " + error);
+            return [];
+            }
+        }
+        async function pond(){
+            if(ducks.length == 0 || ducks == undefined){
+                ducks = await getAll();
+            }
+            const duckCards = document.getElementById("duckCard");
+            for(let duck of ducks){
+                duckCards.innerHTML = duckCards.innerHTML + 
+                    `<div class="card">
+                        <img src="https"//localhost:8080/ducks/${duck.id}/image" alt="Avatar" style="width:100%">
+                            <div class="container">
+                            <h4><b>${duck.id}</b></h4>
+                            <p>${duck.type}</p>
+                        </div>
+                    </div>`;
+            }
+        }
+    </script>    
 </body>
 </html>
