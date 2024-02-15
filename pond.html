@@ -24,7 +24,6 @@
 </head>
 <body onload="pond()">
     <div class="card" id="duckCard"></div>
-    
     <script>
         let ducks = [];
         async function getAll(){
@@ -51,7 +50,7 @@
             for(let duck of ducks){
                 duckCards.innerHTML = duckCards.innerHTML + 
                     `<div class="card">
-                        <img src="https"//localhost:8080/ducks/${duck.id}/image" alt="Avatar" style="width:100%">
+                        <img src="https://localhost:8080/ducks/${duck.id}/image" alt="Avatar" style="width:100%">
                             <div class="container">
                             <h4><b>${duck.id}</b></h4>
                             <p>${duck.type}</p>
@@ -59,6 +58,6 @@
                     </div>`;
             }
         }
-    </script>    
+    </script>
 </body>
 </html>
