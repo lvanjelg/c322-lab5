@@ -22,33 +22,19 @@
         }
     </style>
 </head>
-<body onload="pond()">
-    <div class="card" id="duckCard"></div>
+<body">
+    <div id="duckPond"></div>
     <script>
-        let ducks = [];
-        async function getAll(){
-            let host = "http://localhost:8080";
-            try{
-                let response = await fetch(host + "/ducks")
-                if(response.ok){
-                    let ducks = await response.json();
-                    return ducks;
-                }else{
-                    console.error("HTTP Error: " + response.status);
-                    return [];
-                }
-            }catch(error){
-            console.error("Fetch error: " + error);
-            return [];
-            }
-        }
         async function pond(){
-            if(ducks.length == 0 || ducks == undefined){
-                ducks = await getAll();
+            const response = await fetch("http://localhost:8080/ducks")
+            if(!response.ok){
+                throw new Error(`HTTP error status: ${response.status}`);
             }
-            const duckCards = document.getElementById("duckCard");
+            const ducks = await response.json();
+            const duckCards = document.getElementById("duckPond");
+            duckCards.innerHTML = "";
             for(let duck of ducks){
-                duckCards.innerHTML = duckCards.innerHTML + 
+                const duckCard =
                     `<div class="card">
                         <img src="https://localhost:8080/ducks/${duck.id}/image" alt="Avatar" style="width:100%">
                             <div class="container">
@@ -56,8 +42,10 @@
                             <p>${duck.type}</p>
                         </div>
                     </div>`;
+                duckCards.innerHTML += duckCard;
             }
         }
+        window.onload = pond;
     </script>
 </body>
 </html>
